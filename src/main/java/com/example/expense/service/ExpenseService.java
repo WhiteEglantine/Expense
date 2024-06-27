@@ -1,7 +1,8 @@
 package com.example.expense.service;
 
+import com.example.expense.constant.ExpenseCategory;
 import com.example.expense.dto.ExpenseDto;
-import com.example.expense.entity.ExpenseEntity;
+import com.example.expense.entity.Expense;
 import com.example.expense.entity.User;
 import com.example.expense.exception.ExpenseNotFoundException;
 import com.example.expense.exception.ExpenseOwnershipException;
@@ -24,38 +25,42 @@ public class ExpenseService {
 
     public List<ExpenseDto> getAllExpenses() {
         User user = SecurityContextUtils.getCurrentUser();
-        return expenseMapper.toDtoList(expenseRepository.findAllByUserId(user.getId()));
+        return expenseMapper.toDtoList(expenseRepository.findAllByUser(user));
     }
 
     public ExpenseDto getExpense(long id) {
-        ExpenseEntity expenseEntity = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
-        checkAccess(expenseEntity);
-        return expenseMapper.toDto(expenseEntity);
+        Expense expense = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        checkAccess(expense);
+        return expenseMapper.toDto(expense);
     }
 
     public void addExpense(ExpenseDto expenseDto) {
         User user = SecurityContextUtils.getCurrentUser();
-        ExpenseEntity expenseEntity = expenseMapper.toEntity(expenseDto);
-        expenseEntity.setUser(user);
-        expenseRepository.save(expenseEntity);
+        Expense expense = expenseMapper.toEntity(expenseDto);
+        expense.setUser(user);
+        expenseRepository.save(expense);
     }
 
     public void updateExpense(long id, ExpenseDto expenseDto) {
-        ExpenseEntity expenseEntity = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
-        checkAccess(expenseEntity);
-        expenseMapper.updateEntity(expenseEntity, expenseDto);
-        expenseRepository.save(expenseEntity);
+        Expense expense = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        checkAccess(expense);
+        expenseMapper.updateEntity(expense, expenseDto);
+        expenseRepository.save(expense);
     }
 
     public void deleteExpense(long id) {
-        ExpenseEntity expenseEntity = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
-        checkAccess(expenseEntity);
-        expenseRepository.delete(expenseEntity);
+        Expense expense = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        checkAccess(expense);
+        expenseRepository.delete(expense);
     }
 
-    private void checkAccess(ExpenseEntity expenseEntity) {
+    private void checkAccess(Expense expense) {
         User user = SecurityContextUtils.getCurrentUser();
-        if (user.getId() != expenseEntity.getUser().getId())
+        if (user.getId() != expense.getUser().getId())
             throw new ExpenseOwnershipException();
+    }
+
+    public float calculateTotalExpense(long userId, ExpenseCategory expenseCategory, int month, int year) {
+        return expenseRepository.calculateTotalExpense(userId, expenseCategory, month, year);
     }
 }

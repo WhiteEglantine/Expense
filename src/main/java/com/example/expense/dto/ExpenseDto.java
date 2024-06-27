@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @Setter
 public class ExpenseDto {
 
+    private Long id;
+
     @NotBlank
     @Length(max = 1000)
     private String description;

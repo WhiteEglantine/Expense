@@ -1,13 +1,12 @@
 package com.example.expense.service;
 
 import com.example.expense.dto.ChangePasswordDto;
+import com.example.expense.entity.Role;
+import com.example.expense.entity.User;
 import com.example.expense.exception.RoleNotFoundException;
 import com.example.expense.exception.UserNotFoundException;
 import com.example.expense.constant.UserRole;
 import com.example.expense.dto.UpdateUserDto;
-import com.example.expense.entity.Role;
-import com.example.expense.entity.User;
-import com.example.expense.security.CustomUserDetails;
 import com.example.expense.repository.RoleRepository;
 import com.example.expense.repository.UserRepository;
 import com.example.expense.util.SecurityContextUtils;

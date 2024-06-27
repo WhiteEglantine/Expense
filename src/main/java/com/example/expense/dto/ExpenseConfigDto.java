@@ -8,14 +8,15 @@ import lombok.Setter;
 @Setter
 public class ExpenseConfigDto {
 
+    private Long id;
+
+    private Long userId;
+
     @NotNull
     private Float limit;
 
     @NotNull
     private String category;
-
-    @NotNull
-    private String interval;
 
     @NotNull
     private Boolean active;

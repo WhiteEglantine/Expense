@@ -11,12 +11,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "expense")
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenseEntity extends BaseEntity {
+public class Expense extends BaseEntity {
 
     @NotBlank
     @Length(max = 1000)

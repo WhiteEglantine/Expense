@@ -1,7 +1,7 @@
 package com.example.expense.service;
 
 import com.example.expense.dto.ExpenseConfigDto;
-import com.example.expense.entity.ExpenseConfigEntity;
+import com.example.expense.entity.ExpenseConfig;
 import com.example.expense.entity.User;
 import com.example.expense.exception.ExpenseConfigNotFoundException;
 import com.example.expense.exception.ExpenseOwnershipException;
@@ -24,38 +24,46 @@ public class ExpenseConfigService {
 
     public List<ExpenseConfigDto> getAllExpenseConfigs() {
         User user = SecurityContextUtils.getCurrentUser();
-        return expenseConfigMapper.toDtoList(expenseConfigRepository.findAllByUserId(user.getId()));
+        return expenseConfigMapper.toDtoList(expenseConfigRepository.findAllByUser(user));
     }
 
     public ExpenseConfigDto getExpenseConfig(long id) {
-        ExpenseConfigEntity expenseConfigEntity = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
-        checkAccess(expenseConfigEntity);
-        return expenseConfigMapper.toDto(expenseConfigEntity);
+        ExpenseConfig expenseConfig = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
+        checkAccess(expenseConfig);
+        return expenseConfigMapper.toDto(expenseConfig);
     }
 
     public void addExpenseConfig(ExpenseConfigDto expenseConfigDto) {
         User user = SecurityContextUtils.getCurrentUser();
-        ExpenseConfigEntity expenseConfigEntity = expenseConfigMapper.toEntity(expenseConfigDto);
-        expenseConfigEntity.setUser(user);
-        expenseConfigRepository.save(expenseConfigEntity);
+        ExpenseConfig expenseConfig = expenseConfigMapper.toEntity(expenseConfigDto);
+        expenseConfig.setUser(user);
+        expenseConfigRepository.save(expenseConfig);
     }
 
     public void updateExpenseConfig(long id, ExpenseConfigDto expenseConfigDto) {
-        ExpenseConfigEntity expenseConfigEntity = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
-        checkAccess(expenseConfigEntity);
-        expenseConfigMapper.updateEntity(expenseConfigEntity, expenseConfigDto);
-        expenseConfigRepository.save(expenseConfigEntity);
+        ExpenseConfig expenseConfig = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
+        checkAccess(expenseConfig);
+        expenseConfigMapper.updateEntity(expenseConfig, expenseConfigDto);
+        expenseConfigRepository.save(expenseConfig);
     }
 
     public void deleteExpenseConfig(long id) {
-        ExpenseConfigEntity expenseConfigEntity = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
-        checkAccess(expenseConfigEntity);
-        expenseConfigRepository.delete(expenseConfigEntity);
+        ExpenseConfig expenseConfig = expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
+        checkAccess(expenseConfig);
+        expenseConfigRepository.delete(expenseConfig);
     }
 
-    private void checkAccess(ExpenseConfigEntity expenseConfigEntity) {
+    private void checkAccess(ExpenseConfig expenseConfig) {
         User user = SecurityContextUtils.getCurrentUser();
-        if (user.getId() != expenseConfigEntity.getUser().getId())
+        if (user.getId() != expenseConfig.getUser().getId())
             throw new ExpenseOwnershipException();
+    }
+
+    public List<ExpenseConfigDto> getAllActiveExpenseConfigs() {
+        return expenseConfigMapper.toDtoList(expenseConfigRepository.findAllByActiveTrue());
+    }
+
+    public ExpenseConfig getExpenseConfigEntity(long id) {
+        return expenseConfigRepository.findById(id).orElseThrow(ExpenseConfigNotFoundException::new);
     }
 }

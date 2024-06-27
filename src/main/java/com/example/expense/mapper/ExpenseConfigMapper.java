@@ -1,29 +1,28 @@
 package com.example.expense.mapper;
 
 import com.example.expense.constant.ExpenseCategory;
-import com.example.expense.constant.ExpenseInterval;
 import com.example.expense.dto.ExpenseConfigDto;
-import com.example.expense.entity.ExpenseConfigEntity;
+import com.example.expense.entity.ExpenseConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", imports = {ExpenseCategory.class, ExpenseInterval.class})
+@Mapper(componentModel = "spring", imports = {ExpenseCategory.class})
 public interface ExpenseConfigMapper {
 
-    ExpenseConfigDto toDto(ExpenseConfigEntity expenseConfigEntity);
+    @Mapping(target = "userId", source = "expenseConfig.user.id")
+    ExpenseConfigDto toDto(ExpenseConfig expenseConfig);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", expression = "java(ExpenseCategory.valueOf(expenseConfigDto.getCategory()))")
-    @Mapping(target = "interval", expression = "java(ExpenseInterval.valueOf(expenseConfigDto.getInterval()))")
-    ExpenseConfigEntity toEntity(ExpenseConfigDto expenseConfigDto);
+    ExpenseConfig toEntity(ExpenseConfigDto expenseConfigDto);
 
-    List<ExpenseConfigDto> toDtoList(List<ExpenseConfigEntity> expenseConfigEntities);
+    List<ExpenseConfigDto> toDtoList(List<ExpenseConfig> expenseConfigEntities);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "category", expression = "java(ExpenseCategory.valueOf(expenseDto.getCategory()))")
-    @Mapping(target = "interval", expression = "java(ExpenseInterval.valueOf(expenseConfigDto.getInterval()))")
-    void updateEntity(@MappingTarget ExpenseConfigEntity expenseConfigEntity, ExpenseConfigDto expenseConfigDto);
+    @Mapping(target = "category", expression = "java(ExpenseCategory.valueOf(expenseConfigDto.getCategory()))")
+    void updateEntity(@MappingTarget ExpenseConfig expenseConfig, ExpenseConfigDto expenseConfigDto);
 }

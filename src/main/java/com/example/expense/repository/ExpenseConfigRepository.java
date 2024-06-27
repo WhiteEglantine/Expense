@@ -1,6 +1,7 @@
 package com.example.expense.repository;
 
-import com.example.expense.entity.ExpenseConfigEntity;
+import com.example.expense.entity.ExpenseConfig;
+import com.example.expense.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,8 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ExpenseConfigRepository extends JpaRepository<ExpenseConfigEntity, Long> {
-    Optional<ExpenseConfigEntity> findById(long id);
+public interface ExpenseConfigRepository extends JpaRepository<ExpenseConfig, Long> {
+    Optional<ExpenseConfig> findById(long id);
 
-    List<ExpenseConfigEntity> findAllByUserId(long userId);
+    List<ExpenseConfig> findAllByUser(User user);
+
+    List<ExpenseConfig> findAllByActiveTrue();
+
+
 }
