@@ -1,6 +1,5 @@
-package com.example.expense.security.entity;
+package com.example.expense.entity;
 
-import com.example.expense.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

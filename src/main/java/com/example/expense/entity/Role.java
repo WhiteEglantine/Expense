@@ -1,8 +1,8 @@
-package com.example.expense.security.entity;
+package com.example.expense.entity;
 
 import com.example.expense.converter.JsonSetConverter;
 import com.example.expense.entity.BaseEntity;
-import com.example.expense.security.constant.UserRole;
+import com.example.expense.constant.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

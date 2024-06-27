@@ -1,16 +1,16 @@
-package com.example.expense.security.service;
+package com.example.expense.service;
 
 import com.example.expense.exception.RoleNotFoundException;
 import com.example.expense.exception.UserAlreadyExistsException;
-import com.example.expense.security.constant.UserRole;
-import com.example.expense.security.dto.LoginRegisterDto;
-import com.example.expense.security.dto.LoginResponse;
-import com.example.expense.security.entity.Role;
-import com.example.expense.security.entity.User;
-import com.example.expense.security.jwt.CustomUserDetails;
-import com.example.expense.security.jwt.JwtUtils;
-import com.example.expense.security.repository.RoleRepository;
-import com.example.expense.security.repository.UserRepository;
+import com.example.expense.constant.UserRole;
+import com.example.expense.dto.LoginRegisterDto;
+import com.example.expense.dto.LoginResponse;
+import com.example.expense.entity.Role;
+import com.example.expense.entity.User;
+import com.example.expense.security.CustomUserDetails;
+import com.example.expense.security.JwtUtils;
+import com.example.expense.repository.RoleRepository;
+import com.example.expense.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

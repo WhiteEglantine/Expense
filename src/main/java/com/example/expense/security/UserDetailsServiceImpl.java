@@ -1,8 +1,7 @@
-package com.example.expense.security.service;
+package com.example.expense.security;
 
-import com.example.expense.security.entity.User;
-import com.example.expense.security.jwt.CustomUserDetails;
-import com.example.expense.security.repository.UserRepository;
+import com.example.expense.entity.User;
+import com.example.expense.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

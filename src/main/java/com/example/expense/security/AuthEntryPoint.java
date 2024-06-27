@@ -1,4 +1,4 @@
-package com.example.expense.security.jwt;
+package com.example.expense.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

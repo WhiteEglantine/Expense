@@ -1,6 +1,6 @@
-package com.example.expense.security.repository;
+package com.example.expense.repository;
 
-import com.example.expense.security.entity.User;
+import com.example.expense.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

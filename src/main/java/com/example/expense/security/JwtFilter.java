@@ -1,6 +1,5 @@
-package com.example.expense.security.jwt;
+package com.example.expense.security;
 
-import com.example.expense.security.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

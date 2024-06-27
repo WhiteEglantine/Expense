@@ -1,4 +1,4 @@
-package com.example.expense.security.dto;
+package com.example.expense.dto;
 import lombok.Getter;
 import lombok.Setter;
 

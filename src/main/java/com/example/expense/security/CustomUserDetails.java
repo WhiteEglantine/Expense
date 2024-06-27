@@ -1,6 +1,6 @@
-package com.example.expense.security.jwt;
+package com.example.expense.security;
 
-import com.example.expense.security.entity.User;
+import com.example.expense.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

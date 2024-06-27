@@ -1,4 +1,4 @@
-package com.example.expense.security.dto;
+package com.example.expense.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

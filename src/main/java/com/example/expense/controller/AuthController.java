@@ -1,7 +1,7 @@
-package com.example.expense.security.controller;
+package com.example.expense.controller;
 
-import com.example.expense.security.dto.LoginRegisterDto;
-import com.example.expense.security.service.AuthService;
+import com.example.expense.dto.LoginRegisterDto;
+import com.example.expense.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
