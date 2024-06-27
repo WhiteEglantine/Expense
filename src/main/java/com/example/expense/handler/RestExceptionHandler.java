@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,6 +52,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Authentication exception occurred.", exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new MessageResponse(ExceptionMessage.INVALID_DATA));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException exception) {
+        log.error("Authorization exception occurred.", exception);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse(ExceptionMessage.ACCESS_DENIED));
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,7 +1,6 @@
 package com.example.expense.security.controller;
 
-import com.example.expense.security.dto.LoginRequest;
-import com.example.expense.security.dto.RegisterRequest;
+import com.example.expense.security.dto.LoginRegisterDto;
 import com.example.expense.security.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        authService.registerUser(registerRequest);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody LoginRegisterDto loginRegisterDto) {
+        authService.registerUser(loginRegisterDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok().body(authService.loginUser(loginRequest));
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRegisterDto loginRegisterDto) {
+        return ResponseEntity.ok().body(authService.loginUser(loginRegisterDto));
     }
 
     @PostMapping("/logout")

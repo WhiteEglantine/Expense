@@ -3,9 +3,8 @@ package com.example.expense.security.service;
 import com.example.expense.exception.RoleNotFoundException;
 import com.example.expense.exception.UserAlreadyExistsException;
 import com.example.expense.security.constant.UserRole;
-import com.example.expense.security.dto.LoginRequest;
+import com.example.expense.security.dto.LoginRegisterDto;
 import com.example.expense.security.dto.LoginResponse;
-import com.example.expense.security.dto.RegisterRequest;
 import com.example.expense.security.entity.Role;
 import com.example.expense.security.entity.User;
 import com.example.expense.security.jwt.CustomUserDetails;
@@ -26,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +37,14 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
-    public void registerUser(RegisterRequest registerRequest) {
-        Optional<User> userOptional = userRepository.findByUsername(registerRequest.getUsername());
+    public void registerUser(LoginRegisterDto loginRegisterDto) {
+        Optional<User> userOptional = userRepository.findByUsername(loginRegisterDto.getUsername());
         if (userOptional.isPresent()) {
             throw new UserAlreadyExistsException();
         }
 
-        User user = new User(registerRequest.getUsername(),
-                passwordEncoder.encode(registerRequest.getPassword()));
+        User user = new User(loginRegisterDto.getUsername(),
+                passwordEncoder.encode(loginRegisterDto.getPassword()));
 
         // Adding a user with ADMIN role is not allowed and all users will be created by USER role
         Role role = roleRepository.findByName(UserRole.USER).orElseThrow(RoleNotFoundException::new);
@@ -54,9 +52,9 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public LoginResponse loginUser(LoginRequest loginRequest) {
+    public LoginResponse loginUser(LoginRegisterDto loginRegisterDto) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRegisterDto.getUsername(), loginRegisterDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
