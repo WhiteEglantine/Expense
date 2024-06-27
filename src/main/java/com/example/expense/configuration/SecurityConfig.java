@@ -26,7 +26,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
-public class SecurityConfiguration {
+public class SecurityConfig {
 
     private final JwtUtils jwtUtils;
     private final AuthEntryPoint authEntryPoint;

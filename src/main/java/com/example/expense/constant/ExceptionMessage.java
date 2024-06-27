@@ -15,5 +15,8 @@ public class ExceptionMessage {
     public static final String USER_ALREADY_EXISTS = "User already exists.";
     public static final String ROLE_NOT_FOUND = "Role not found.";
     public static final String USER_NOT_FOUND = "User not found.";
+    public static final String EXPENSE_NOT_FOUND = "Expense not found.";
+    public static final String EXPENSE_CONFIG_NOT_FOUND = "Expense config not found.";
+    public static final String EXPENSE_OWNERSHIP_VIOLATION = "Expense ownership violation.";
 
 }

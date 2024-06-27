@@ -37,9 +37,7 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDto changePasswordDto) {
-        CustomUserDetails customUserDetails = SecurityContextUtils.getCurrentUserDetails();
-        User user = userRepository.findByUsername(customUserDetails.getUsername())
-                .orElseThrow(UserNotFoundException::new);
+        User user = SecurityContextUtils.getCurrentUser();
         if (passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
             userRepository.save(user);
@@ -47,4 +45,5 @@ public class UserService {
             throw new BadCredentialsException("Incorrect password");
         }
     }
+
 }
