@@ -1,5 +1,6 @@
 package com.example.expense.security.service;
 
+import com.example.expense.exception.RoleNotFoundException;
 import com.example.expense.exception.UserAlreadyExistsException;
 import com.example.expense.security.constant.UserRole;
 import com.example.expense.security.dto.LoginRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -45,11 +48,9 @@ public class AuthService {
         User user = new User(registerRequest.getUsername(),
                 passwordEncoder.encode(registerRequest.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName(UserRole.USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(userRole); // Adding a user with ADMIN role is not allowed and all users will be created by USER role
-        user.setRoles(roles);
+        // Adding a user with ADMIN role is not allowed and all users will be created by USER role
+        Role role = roleRepository.findByName(UserRole.USER).orElseThrow(RoleNotFoundException::new);
+        user.setRole(role);
         userRepository.save(user);
     }
 
@@ -63,11 +64,16 @@ public class AuthService {
 
         String token = jwtUtils.generateJwtToken(authentication);
 
-        List<String> roles = userDetails.getAuthorities().stream()
+        Set<String> privileges = new HashSet<>();
+        List<String> strRoles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
+        strRoles.forEach(strRole -> {
+            Role role = roleRepository.findByName(UserRole.valueOf(strRole)).orElseThrow(RoleNotFoundException::new);
+            privileges.addAll(role.getPrivileges());
+        });
 
-        return new LoginResponse(token, jwtUtils.getJwtExpirationMs(), String.join(",", roles));
+        return new LoginResponse(token, jwtUtils.getJwtExpirationMs(), privileges);
     }
 
 }

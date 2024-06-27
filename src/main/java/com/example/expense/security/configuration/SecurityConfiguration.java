@@ -42,7 +42,8 @@ public class SecurityConfiguration {
                                 antMatcher("/v3/**"),
                                 antMatcher("/error/**"),
                                 antMatcher("/auth/**"),
-                                antMatcher("/h2-console/**")).permitAll()
+                                antMatcher("/h2-console/**"),
+                                antMatcher("/favicon.ico")).permitAll()
                         .anyRequest().authenticated())
                 .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

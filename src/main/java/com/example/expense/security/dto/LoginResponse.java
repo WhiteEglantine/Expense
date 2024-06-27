@@ -2,18 +2,20 @@ package com.example.expense.security.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Setter
 @Getter
 public class LoginResponse {
     private String accessToken;
     private String tokenType = "bearer";
     private Long expiresIn;
-    private String roles;
+    private Set<String> privileges;
 
-    public LoginResponse(String accessToken, Long expiresIn, String roles) {
+    public LoginResponse(String accessToken, Long expiresIn, Set<String> privileges) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
-        this.roles = roles;
+        this.privileges = privileges;
     }
 }
 
