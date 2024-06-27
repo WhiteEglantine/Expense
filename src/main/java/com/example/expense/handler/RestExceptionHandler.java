@@ -1,6 +1,6 @@
 package com.example.expense.handler;
 
-import com.example.expense.constant.ExceptionMessages;
+import com.example.expense.constant.ExceptionMessage;
 import com.example.expense.dto.MessageResponse;
 import com.example.expense.exception.AppRuntimeException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 @Slf4j
@@ -28,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new MessageResponse(ExceptionMessages.MALFORMED_JSON_REQUEST));
+                .body(new MessageResponse(ExceptionMessage.MALFORMED_JSON_REQUEST));
     }
 
     @Override
@@ -50,14 +49,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleGeneralExceptions(Exception exception) {
         log.error("General exception occurred.", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new MessageResponse(ExceptionMessages.INTERNAL_ERROR));
+                .body(new MessageResponse(ExceptionMessage.INTERNAL_ERROR));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDatabaseExceptions(DataIntegrityViolationException exception) {
         log.error("Database exception occurred.", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new MessageResponse(ExceptionMessages.DB_ERROR));
+                .body(new MessageResponse(ExceptionMessage.DB_ERROR));
     }
 
     private HttpStatus getHttpStatus(HttpStatusCode httpStatusCode) {

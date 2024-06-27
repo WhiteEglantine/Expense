@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ExceptionMessages {
+public class ExceptionMessage {
     public static final String INTERNAL_ERROR = "Internal error occurred.";
     public static final String MALFORMED_JSON_REQUEST = "Input data is invalid.";
     public static final String INFO_NOT_FOUND = "Info not found.";

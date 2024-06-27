@@ -1,6 +1,6 @@
 package com.example.expense.exception;
 
-import com.example.expense.constant.ExceptionMessages;
+import com.example.expense.constant.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class BadRequestException extends AppRuntimeException {
 
     public BadRequestException() {
-        this(ExceptionMessages.MALFORMED_JSON_REQUEST);
+        this(ExceptionMessage.MALFORMED_JSON_REQUEST);
     }
 
     public BadRequestException(String message) {
