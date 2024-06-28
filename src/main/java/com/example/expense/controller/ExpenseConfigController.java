@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/expense-configs")
-@SecurityRequirement(name = "Client APIs")
+@SecurityRequirement(name = "Authenticated APIs")
 public class ExpenseConfigController {
 
     private final ExpenseConfigService expenseConfigService;

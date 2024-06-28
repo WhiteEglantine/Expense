@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "Expense management API Documentation", version = "1.0"))
-@SecurityScheme(name = "Client APIs", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@SecurityScheme(name = "Authenticated APIs", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class SwaggerOpenAPIConfig {
 }

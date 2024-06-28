@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/expenses")
-@SecurityRequirement(name = "Client APIs")
+@SecurityRequirement(name = "Authenticated APIs")
 public class ExpenseController {
 
     private final ExpenseService expenseService;

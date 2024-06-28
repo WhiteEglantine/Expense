@@ -22,9 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 

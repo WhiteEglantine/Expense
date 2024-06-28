@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/notifications")
-@SecurityRequirement(name = "Client APIs")
+@SecurityRequirement(name = "Authenticated APIs")
 public class NotificationController {
 
     private final NotificationService notificationService;
