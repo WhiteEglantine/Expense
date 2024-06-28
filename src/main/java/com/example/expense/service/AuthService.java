@@ -60,7 +60,7 @@ public class AuthService {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String token = jwtUtils.generateJwtToken(authentication);
+        String token = jwtUtils.generateJwtToken(userDetails);
 
         Set<String> privileges = new HashSet<>();
         List<String> strRoles = userDetails.getAuthorities().stream()

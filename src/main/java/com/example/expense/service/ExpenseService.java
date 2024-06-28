@@ -8,7 +8,7 @@ import com.example.expense.exception.ExpenseNotFoundException;
 import com.example.expense.exception.ExpenseOwnershipException;
 import com.example.expense.mapper.ExpenseMapper;
 import com.example.expense.repository.ExpenseRepository;
-import com.example.expense.util.SecurityContextUtils;
+import com.example.expense.util.SecurityContextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +24,8 @@ public class ExpenseService {
     private final ExpenseMapper expenseMapper;
 
     public List<ExpenseDto> getAllExpenses() {
-        User user = SecurityContextUtils.getCurrentUser();
-        return expenseMapper.toDtoList(expenseRepository.findAllByUser(user));
+        long userId = SecurityContextUtil.getCurrentUserId();
+        return expenseMapper.toDtoList(expenseRepository.findAllByUserId(userId));
     }
 
     public ExpenseDto getExpense(long id) {
@@ -35,7 +35,7 @@ public class ExpenseService {
     }
 
     public void addExpense(ExpenseDto expenseDto) {
-        User user = SecurityContextUtils.getCurrentUser();
+        User user = SecurityContextUtil.getCurrentUser();
         Expense expense = expenseMapper.toEntity(expenseDto);
         expense.setUser(user);
         expenseRepository.save(expense);
@@ -55,12 +55,13 @@ public class ExpenseService {
     }
 
     private void checkAccess(Expense expense) {
-        User user = SecurityContextUtils.getCurrentUser();
-        if (user.getId() != expense.getUser().getId())
+        long userId = SecurityContextUtil.getCurrentUserId();
+        if (userId != expense.getUser().getId())
             throw new ExpenseOwnershipException();
     }
 
-    public float calculateTotalExpense(long userId, ExpenseCategory expenseCategory, int month, int year) {
-        return expenseRepository.calculateTotalExpense(userId, expenseCategory, month, year);
+    public float calculateTotalExpense(long userId, String expenseCategory, int month, int year) {
+        Float totalExpense = expenseRepository.calculateTotalExpense(userId, expenseCategory, month, year);
+        return totalExpense != null ? totalExpense : 0;
     }
 }

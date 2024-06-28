@@ -12,9 +12,8 @@ import java.util.Optional;
 public interface ExpenseConfigRepository extends JpaRepository<ExpenseConfig, Long> {
     Optional<ExpenseConfig> findById(long id);
 
-    List<ExpenseConfig> findAllByUser(User user);
+    List<ExpenseConfig> findAllByUserId(long userId);
 
     List<ExpenseConfig> findAllByActiveTrue();
-
 
 }

@@ -7,7 +7,7 @@ import com.example.expense.exception.ExpenseConfigNotFoundException;
 import com.example.expense.exception.ExpenseOwnershipException;
 import com.example.expense.mapper.ExpenseConfigMapper;
 import com.example.expense.repository.ExpenseConfigRepository;
-import com.example.expense.util.SecurityContextUtils;
+import com.example.expense.util.SecurityContextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +23,8 @@ public class ExpenseConfigService {
     private final ExpenseConfigMapper expenseConfigMapper;
 
     public List<ExpenseConfigDto> getAllExpenseConfigs() {
-        User user = SecurityContextUtils.getCurrentUser();
-        return expenseConfigMapper.toDtoList(expenseConfigRepository.findAllByUser(user));
+        long userId = SecurityContextUtil.getCurrentUserId();
+        return expenseConfigMapper.toDtoList(expenseConfigRepository.findAllByUserId(userId));
     }
 
     public ExpenseConfigDto getExpenseConfig(long id) {
@@ -34,7 +34,7 @@ public class ExpenseConfigService {
     }
 
     public void addExpenseConfig(ExpenseConfigDto expenseConfigDto) {
-        User user = SecurityContextUtils.getCurrentUser();
+        User user = SecurityContextUtil.getCurrentUser();
         ExpenseConfig expenseConfig = expenseConfigMapper.toEntity(expenseConfigDto);
         expenseConfig.setUser(user);
         expenseConfigRepository.save(expenseConfig);
@@ -54,8 +54,8 @@ public class ExpenseConfigService {
     }
 
     private void checkAccess(ExpenseConfig expenseConfig) {
-        User user = SecurityContextUtils.getCurrentUser();
-        if (user.getId() != expenseConfig.getUser().getId())
+        long userId = SecurityContextUtil.getCurrentUserId();
+        if (userId != expenseConfig.getUser().getId())
             throw new ExpenseOwnershipException();
     }
 

@@ -9,7 +9,7 @@ import com.example.expense.constant.UserRole;
 import com.example.expense.dto.UpdateUserDto;
 import com.example.expense.repository.RoleRepository;
 import com.example.expense.repository.UserRepository;
-import com.example.expense.util.SecurityContextUtils;
+import com.example.expense.util.SecurityContextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDto changePasswordDto) {
-        User user = SecurityContextUtils.getCurrentUser();
+        User user = SecurityContextUtil.getCurrentUser();
         if (passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
             userRepository.save(user);

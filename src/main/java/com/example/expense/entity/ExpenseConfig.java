@@ -27,8 +27,7 @@ public class ExpenseConfig extends BaseEntity {
     private Boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
-
 
 }
