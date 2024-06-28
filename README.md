@@ -1,1 +1,2 @@
 # Expense
+This application has been developed to manage the user expenses during monthly intervals. Users can select their expense category from a list and save them by date. Also, they can set notification alarms to being notified when their total expense in each category exceeds the limit. Notification raising can be activated/deactivated and the limit is reconfigurable. 

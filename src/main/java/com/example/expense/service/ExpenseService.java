@@ -1,6 +1,5 @@
 package com.example.expense.service;
 
-import com.example.expense.constant.ExpenseCategory;
 import com.example.expense.dto.ExpenseDto;
 import com.example.expense.entity.Expense;
 import com.example.expense.entity.User;
@@ -8,12 +7,16 @@ import com.example.expense.exception.ExpenseNotFoundException;
 import com.example.expense.exception.ExpenseOwnershipException;
 import com.example.expense.mapper.ExpenseMapper;
 import com.example.expense.repository.ExpenseRepository;
+import com.example.expense.specification.ExpenseSpecification;
 import com.example.expense.util.SecurityContextUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +26,11 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ExpenseMapper expenseMapper;
 
-    public List<ExpenseDto> getAllExpenses() {
+    public Page<ExpenseDto> getAllExpenses(String category, LocalDate fromDate, LocalDate toDate, Pageable pageable) {
         long userId = SecurityContextUtil.getCurrentUserId();
-        return expenseMapper.toDtoList(expenseRepository.findAllByUserId(userId));
+        Specification<Expense> specification = Specification.where(Specification.allOf(
+                ExpenseSpecification.getSpecifications(userId, category, fromDate, toDate)));
+        return expenseRepository.findAll(specification, pageable).map(expenseMapper::toDto);
     }
 
     public ExpenseDto getExpense(long id) {

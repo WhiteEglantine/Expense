@@ -7,6 +7,8 @@ import com.example.expense.util.SecurityContextUtil;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +24,16 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok().body(expenseService.getAllExpenses());
+    public ResponseEntity<Page<ExpenseDto>> getAll(@RequestParam(required = false) String category,
+                                                   @RequestParam(required = false) LocalDate fromDate,
+                                                   @RequestParam(required = false) LocalDate toDate,
+                                                   Pageable pageable) {
+        Page<ExpenseDto> result = expenseService.getAllExpenses(category, fromDate, toDate, pageable);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> get(@PathVariable long id) {
+    public ResponseEntity<ExpenseDto> get(@PathVariable long id) {
         return ResponseEntity.ok().body(expenseService.getExpense(id));
     }
 
@@ -51,7 +57,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/total")
-    public ResponseEntity<?> getTotalExpense(@RequestParam(name = "category", required = false) String category) {
+    public ResponseEntity<TotalExpenseDto> getTotalExpense(@RequestParam(name = "category", required = false) String category) {
         int currentMonth = LocalDate.now().getMonthValue();
         int currentYear = LocalDate.now().getYear();
         return ResponseEntity.ok().body(TotalExpenseDto.builder()
